@@ -22,8 +22,7 @@ export class Ec2Stack extends cdk.Stack {
       machineImage: new AmazonLinuxImage({ generation: AmazonLinuxGeneration.AMAZON_LINUX_2023 }),
     })
 
-    const target = new ApplicationTargetGroup(this, 'tg', {
-      vpc: props.vpc,
+    props.listener.addTargets('tg', {
       port: 80,
       targets: [new InstanceTarget(this.instance)],
     })
