@@ -20,4 +20,5 @@ const ec2 = new Ec2Stack(app, `ec2-stack`, {
   env: env,
   vpc: vpc.vpc,
   alb: alb.alb,
+  listener: alb.listener,
 });
