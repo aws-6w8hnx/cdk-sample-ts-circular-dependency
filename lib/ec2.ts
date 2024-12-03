@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
-import { AmazonLinuxGeneration, AmazonLinuxImage, Instance, InstanceClass, InstanceSize, InstanceType, Port, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { ApplicationListener, ApplicationLoadBalancer, ApplicationTargetGroup, } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import { AmazonLinuxGeneration, AmazonLinuxImage, Instance, InstanceClass, InstanceSize, InstanceType, Peer, Port, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { ApplicationListener, ApplicationLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { InstanceTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import { Construct } from 'constructs';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -27,6 +27,6 @@ export class Ec2Stack extends cdk.Stack {
       targets: [new InstanceTarget(this.instance)],
     })
 
-    this.instance.connections.allowFrom(props.alb, Port.HTTP)
+    this.instance.connections.allowFrom(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(80), 'allow inbound http rule for vpc cidr block')
   }
 }
