@@ -26,7 +26,8 @@ export class Ec2Stack extends cdk.Stack {
       port: 80,
       targets: [new InstanceTarget(this.instance)],
     })
-
-    this.instance.connections.allowFrom(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(80), 'allow inbound http rule for vpc cidr block')
+    // The below inline will create an ingress rule in the ec2 instance sg
+    props.alb.connections.allowTo(this.instance, Port.HTTP)
+    // this.instance.connections.allowFrom(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(80), 'allow inbound http rule for vpc cidr block')
   }
 }
